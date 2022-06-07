@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Topic
+
+# Topicモデルを管理サイトに登録
+admin.site.register(Topic)
