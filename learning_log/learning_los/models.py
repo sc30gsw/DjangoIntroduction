@@ -45,4 +45,9 @@ class Entry(models.Model):
         Returns:
             str: Entry.text
         """
-        return f"{self.text[:25]}..."
+
+        # 記事のテキストが25文字を超える場合のみ末尾に「...」を付ける
+        if len(self.text) > 25:
+            return f"{self.text[:25]}..."
+        
+        return f"{self.text[:25]}"
