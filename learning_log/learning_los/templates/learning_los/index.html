@@ -5,11 +5,11 @@
 		<title>学習ノート</title>
 	</head>
 	<body>
-		<p>学習ノート</p>
-
+		{% extends "learning_los/base.html" %} {% block content %}
 		<p>
 			学習ノートを使えば、好みのトピックについて学習していることを記録して、<br />
 			いつも最新の状態を把握できます。
 		</p>
+		{% endblock content %}
 	</body>
 </html>
