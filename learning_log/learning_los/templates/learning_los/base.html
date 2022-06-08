@@ -5,7 +5,8 @@
 	</head>
 	<body>
 		<p>
-			<a href="{% url 'learning_los:index' %}">学習ノート</a>
+			<a href="{% url 'learning_los:index' %}">学習ノート</a>-
+			<a href="{% url 'learning_los:topics' %}">トピック一覧</a>
 		</p>
 		{% block content %}{% endblock content %}
 	</body>

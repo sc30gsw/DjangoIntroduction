@@ -8,4 +8,6 @@ app_name = 'learning_los'
 urlpatterns = [
   # ホームページ
   path('', views.index, name='index'),
+  # すべてのトピックを表示するページ
+  path('topics/', views.topics, name="topics"),
 ]

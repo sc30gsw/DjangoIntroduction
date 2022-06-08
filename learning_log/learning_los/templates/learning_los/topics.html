@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>トピック一覧</title>
+	</head>
+	<body>
+		{% extends "learning_los/base.html" %} {% block content %}
+		<p>トピック一覧</p>
+		<ul>
+			{% for topic in topics %}
+			<li>{{ topic }}</li>
+			{% empty %}
+			<li>トピックはまだ作成されていません。</li>
+			{% endfor %}
+		</ul>
+		{% endblock content %}
+	</body>
+</html>
