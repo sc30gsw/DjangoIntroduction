@@ -1,2 +1,5 @@
 
 learning_log/learning_log/local_settings.py
+*.pyc
+learning_log/learning_log/__pycache__/settings.cpython-310.pyc
+learning_log/learning_log/__pycache__/urls.cpython-310.pyc
