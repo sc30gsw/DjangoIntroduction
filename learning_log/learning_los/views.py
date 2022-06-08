@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Topic
+from .models import Topic, Entry
 from .forms import EntryForm, TopicForm
 
 def index(request):
@@ -106,3 +106,33 @@ def new_entry(request, topic_id):
     # 空または無効のフォームを表示する
     context = {'topic': topic ,'form': form}
     return render(request, 'learning_los/new_entry.html', context)
+
+def edit_entry(request, entry_id):
+    """既存の記事を編集する処理
+
+    Args:
+        request (_type_): request
+        entry_id (_type_): Entry.id
+
+    Returns:
+        _type_: edit_entry.html
+    """
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    # リクエストがPOSTでない場合
+    if request.method != 'POST':
+        # 初回リクエスト時は現在の記事の内容がフォームに表示される
+        form = EntryForm(instance=entry)
+    # リクエストがPOSTの場合
+    else:
+        # POSTでデータが送信されるためフォームにデータを渡す
+        form = EntryForm(instance=entry, data=request.POST)
+        # 入力値にエラーがない場合
+        if form.is_valid():
+            # データを保存する
+            form.save()
+            return redirect('learning_los:topic', topic_id=topic.id)
+
+    context = {'entry': entry,'topic': topic, 'form': form}
+    return render(request, 'learning_los/edit_entry.html', context)
