@@ -75,6 +75,15 @@ def new_topic(request):
     return render(request, 'learning_los/new_topic.html', context)
 
 def new_entry(request, topic_id):
+    """指定したトピックに記事を追加する処理
+
+    Args:
+        request (_type_): request
+        topic_id (_type_): Topic.id
+
+    Returns:
+        _type_: new_entry.html
+    """
     topic = Topic.objects.get(id=topic_id)
     # リクエストがPOSTでない場合
     if request.method != 'POST':
