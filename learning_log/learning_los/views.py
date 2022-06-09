@@ -31,6 +31,7 @@ def topics(request):
     context = {'topics': topics}
     return render(request, 'learning_los/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
     """トピック詳細ページに遷移する処理
 
@@ -49,6 +50,7 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_los/topic.html', context)
 
+@login_required
 def new_topic(request):
     """新規トピック作成画面に遷移し、トピックを作成する処理
 
@@ -76,6 +78,7 @@ def new_topic(request):
     context = {'form': form}
     return render(request, 'learning_los/new_topic.html', context)
 
+@login_required
 def new_entry(request, topic_id):
     """指定したトピックに記事を追加する処理
 
@@ -109,6 +112,7 @@ def new_entry(request, topic_id):
     context = {'topic': topic ,'form': form}
     return render(request, 'learning_los/new_entry.html', context)
 
+@login_required
 def edit_entry(request, entry_id):
     """既存の記事を編集する処理
 
