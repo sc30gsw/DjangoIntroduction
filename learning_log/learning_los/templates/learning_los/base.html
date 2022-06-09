@@ -6,7 +6,13 @@
 	<body>
 		<p>
 			<a href="{% url 'learning_los:index' %}">学習ノート</a>-
-			<a href="{% url 'learning_los:topics' %}">トピック一覧</a>
+			<a href="{% url 'learning_los:topics' %}">トピック一覧</a>- 
+			{% if user.is_authenticated %} 
+				こんにちは{{ user.username }}さん 
+				<a href="{% url 'users:logout' %}">ログアウト</a>
+			{% else %}
+				<a href="{% url 'users:login' %}">ログイン</a>
+			{% endif %}
 		</p>
 		{% block content %}{% endblock content %}
 	</body>
