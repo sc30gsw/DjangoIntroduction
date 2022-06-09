@@ -76,7 +76,9 @@ def new_topic(request):
         # 入力値にエラーがない場合
         if form.is_valid():
             # データを保存する
-            form.save()
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return redirect('learning_los:topics')
         
     # 空または無効のフォームを表示する
