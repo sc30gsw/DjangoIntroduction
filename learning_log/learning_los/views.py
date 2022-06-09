@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry
 from .forms import EntryForm, TopicForm
@@ -14,6 +15,7 @@ def index(request):
   """
   return render(request, 'learning_los/index.html')
 
+@login_required
 def topics(request):
     """すべてのトピックを取得し、トピック一覧に遷移する処理
 
