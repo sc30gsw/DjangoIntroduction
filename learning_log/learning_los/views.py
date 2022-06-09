@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 from .models import Topic, Entry
 from .forms import EntryForm, TopicForm
@@ -44,6 +45,10 @@ def topic(request, topic_id):
     """
     # id指定したトピックを取得する
     topic = Topic.objects.get(id=topic_id)
+    # トピックが現在のユーザーが所持するものであることを確認する
+    if topic.owner != request.user:
+        raise Http404
+
     # トピックに紐づく記事(entry)の取得
     entries = topic.entry_set.order_by('-data_added')
     # htmlに渡すコンテキストに個別トピックと記事内容を渡す
@@ -125,6 +130,8 @@ def edit_entry(request, entry_id):
     """
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    if topic.owner != request.user:
+        raise Http404
 
     # リクエストがPOSTでない場合
     if request.method != 'POST':
