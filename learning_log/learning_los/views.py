@@ -26,7 +26,7 @@ def topics(request):
         _type_: topics.html
     """
     # すべてのトピックを作成順に取得する
-    topics = Topic.objects.order_by('data_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('data_added')
     # htmlに渡すコンテキストにトピック一覧を指定
     context = {'topics': topics}
     return render(request, 'learning_los/topics.html', context)
