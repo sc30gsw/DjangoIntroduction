@@ -56,6 +56,12 @@
 				</ul>
 			</div>
 		</nav>
-		{% block content %}{% endblock content %}
+
+		<main role="main" class="container">
+			<div class="pb-2 mb-2 border-bottom">
+				{% block page_header %}{% endblock page_header %}
+			</div>
+			<div>{% block page_content %}{% endblock page_content %}</div>
+		</main>
 	</body>
 </html>
