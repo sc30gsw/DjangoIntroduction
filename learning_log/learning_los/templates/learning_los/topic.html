@@ -14,7 +14,13 @@
 		</p>
 		{% for entry in entries %}
 		<div class="card mb-3">
-			<h4 class="card mb-3">
+			<h4
+				style="
+					background: rgba(0, 0, 0, 0.05);
+					border: 1px solid rgba(0, 0, 0, 0.125);
+					border-radius: 0.25rem;
+				"
+			>
 				{{ entry.data_added|date:'Y年m月d日 H:i' }}
 				<small
 					><a href="{% url 'learning_los:edit_entry' entry.id %}"
