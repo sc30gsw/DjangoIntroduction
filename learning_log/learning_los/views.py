@@ -46,8 +46,7 @@ def topic(request, topic_id):
     # id指定したトピックを取得する
     topic = Topic.objects.get(id=topic_id)
     # トピックが現在のユーザーが所持するものであることを確認する
-    if topic.owner != request.user:
-        raise Http404
+    check_topic_owner(topic.owner, request.user)
 
     # トピックに紐づく記事(entry)の取得
     entries = topic.entry_set.order_by('-data_added')
@@ -132,8 +131,8 @@ def edit_entry(request, entry_id):
     """
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
-    if topic.owner != request.user:
-        raise Http404
+    # トピックが現在のユーザーが所持するものであることを確認する
+    check_topic_owner(topic.owner, request.user)
 
     # リクエストがPOSTでない場合
     if request.method != 'POST':
@@ -151,3 +150,7 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry,'topic': topic, 'form': form}
     return render(request, 'learning_los/edit_entry.html', context)
+
+def check_topic_owner(owner, user):
+    if owner != user:
+        raise Http404
