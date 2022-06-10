@@ -96,6 +96,8 @@ def new_entry(request, topic_id):
         _type_: new_entry.html
     """
     topic = Topic.objects.get(id=topic_id)
+    # トピックが現在のユーザーが所持するものであることを確認する
+    check_topic_owner(topic.owner, request.user)
     # リクエストがPOSTでない場合
     if request.method != 'POST':
         # データを送信しないため空のフォームを生成する
