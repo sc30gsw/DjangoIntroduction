@@ -1,3 +1,4 @@
+{% extends "learning_los/base.html" %}
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -5,11 +6,29 @@
 		<title>学習ノート</title>
 	</head>
 	<body>
-		{% extends "learning_los/base.html" %} {% block content %}
-		<p>
-			学習ノートを使えば、好みのトピックについて学習していることを記録して、<br />
-			いつも最新の状態を把握できます。
-		</p>
-		{% endblock content %}
+		{% block page_header %}
+		<div class="jumbotron">
+			<h1 class="display-3">学んだことを記録しよう</h1>
+			<p class="read">
+				自分だけの学習のノートを作成して、学んだことをいつでも振り返れるようにしよう。<br />
+				何か新しいことを学んだら、その内容をようやくした記事を書こう。
+			</p>
+			{% if user.is_authenticated %}
+			<a
+				class="btn btn-lg btn-primary"
+				href="{% url 'learning_los:new_topic' %}"
+				role="button"
+				>登録する &raquo;</a
+			>
+			{% else %}
+			<a
+				class="btn btn-lg btn-primary"
+				href="{% url 'users:register' %}"
+				role="button"
+				>登録する &raquo;</a
+			>
+			{% endif %}
+		</div>
+		{% endblock page_header %}
 	</body>
 </html>

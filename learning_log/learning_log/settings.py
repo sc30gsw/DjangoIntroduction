@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     # My Application
     'learning_los',
     'users',
+    # Third Party Application
+    'bootstrap4',
+    # Default Application
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

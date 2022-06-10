@@ -1,3 +1,4 @@
+{% extends "learning_los/base.html" %} {% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -5,16 +6,17 @@
 		<title>ユーザー登録</title>
 	</head>
 	<body>
-		{% extends "learning_los/base.html" %} 
-		{% block content %} 
+		{% block page_header %}
+		<h2>アカウントを登録する</h2>
+		{% endblock page_header %} {{% block content %}
 
-				<form method="post" action="{% url 'users:register' %}">
-					{% csrf_token %} 
-					{{ form.as_p }}
+		<form method="post" action="{% url 'users:register' %}" class="form">
+			{% csrf_token %} {% bootstrap_form form %} {% buttons %}
 
-					<input type="hidden" name="next" value="{% url 'learning_los:index' %}" />
-					<button name="submit">登録する</button>
-				</form>
+			<button name="submit" class="btn btn-primary">登録する</button>
+			{% endbuttons %}
+			<input type="hidden" name="next" value="{% url 'learning_los:index' %}" />
+		</form>
 		{% endblock content %}
 	</body>
 </html>
