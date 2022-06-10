@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>ログイン</title>
+	</head>
+	<body>
+		{% extends "learning_los/base.html" %} 
+		{% block content %} 
+			{% if form.errors%}
+				<p>ユーザー名とパスワードが一致しません。<br />もう一度お試しください。</p>
+			{% endif %}
+
+				<form method="post" action="{% url 'users:login' %}">
+					{% csrf_token %} 
+					{{ form.as_p }}
+
+					<input type="hidden" name="next" value="{% url 'learning_los:index' %}" />
+					<button name="submit">ログイン</button>
+				</form>
+		{% endblock content %}
+	</body>
+</html>

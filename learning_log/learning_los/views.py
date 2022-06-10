@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 from .models import Topic, Entry
 from .forms import EntryForm, TopicForm
@@ -14,6 +16,7 @@ def index(request):
   """
   return render(request, 'learning_los/index.html')
 
+@login_required
 def topics(request):
     """すべてのトピックを取得し、トピック一覧に遷移する処理
 
@@ -24,11 +27,12 @@ def topics(request):
         _type_: topics.html
     """
     # すべてのトピックを作成順に取得する
-    topics = Topic.objects.order_by('data_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('data_added')
     # htmlに渡すコンテキストにトピック一覧を指定
     context = {'topics': topics}
     return render(request, 'learning_los/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
     """トピック詳細ページに遷移する処理
 
@@ -41,12 +45,16 @@ def topic(request, topic_id):
     """
     # id指定したトピックを取得する
     topic = Topic.objects.get(id=topic_id)
+    # トピックが現在のユーザーが所持するものであることを確認する
+    check_topic_owner(topic.owner, request.user)
+
     # トピックに紐づく記事(entry)の取得
     entries = topic.entry_set.order_by('-data_added')
     # htmlに渡すコンテキストに個別トピックと記事内容を渡す
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_los/topic.html', context)
 
+@login_required
 def new_topic(request):
     """新規トピック作成画面に遷移し、トピックを作成する処理
 
@@ -67,13 +75,16 @@ def new_topic(request):
         # 入力値にエラーがない場合
         if form.is_valid():
             # データを保存する
-            form.save()
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return redirect('learning_los:topics')
         
     # 空または無効のフォームを表示する
     context = {'form': form}
     return render(request, 'learning_los/new_topic.html', context)
 
+@login_required
 def new_entry(request, topic_id):
     """指定したトピックに記事を追加する処理
 
@@ -85,6 +96,8 @@ def new_entry(request, topic_id):
         _type_: new_entry.html
     """
     topic = Topic.objects.get(id=topic_id)
+    # トピックが現在のユーザーが所持するものであることを確認する
+    check_topic_owner(topic.owner, request.user)
     # リクエストがPOSTでない場合
     if request.method != 'POST':
         # データを送信しないため空のフォームを生成する
@@ -107,6 +120,7 @@ def new_entry(request, topic_id):
     context = {'topic': topic ,'form': form}
     return render(request, 'learning_los/new_entry.html', context)
 
+@login_required
 def edit_entry(request, entry_id):
     """既存の記事を編集する処理
 
@@ -119,6 +133,8 @@ def edit_entry(request, entry_id):
     """
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    # トピックが現在のユーザーが所持するものであることを確認する
+    check_topic_owner(topic.owner, request.user)
 
     # リクエストがPOSTでない場合
     if request.method != 'POST':
@@ -136,3 +152,7 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry,'topic': topic, 'form': form}
     return render(request, 'learning_los/edit_entry.html', context)
+
+def check_topic_owner(owner, user):
+    if owner != user:
+        raise Http404
